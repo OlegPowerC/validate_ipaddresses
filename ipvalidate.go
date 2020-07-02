@@ -37,21 +37,21 @@ func CheckSingleIp(IPaddr string) (err error) {
 
 func MakeListIPAddresses(IPaddrs string) (IPaddrsList []string, err error) {
 	var ipsplitted []string
-	regExString := "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"
-	Re := regexp.MustCompile(regExString)
-	iind1 := Re.FindStringIndex(IPaddrs)
-
-	regExString = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}-[0-9]{1,3}$"
-	Re = regexp.MustCompile(regExString)
-	iind2 := Re.FindStringIndex(IPaddrs)
-
-	if iind1 == nil && iind2 == nil {
-		return ipsplitted, errors.New("Invalid IP address")
-	}
-
 	IPaddrs = strings.TrimSpace(IPaddrs)
 	ipsplitted2 := strings.Split(IPaddrs, ",")
 	for _, vars := range ipsplitted2 {
+		regExString := "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"
+		Re := regexp.MustCompile(regExString)
+		iind1 := Re.FindStringIndex(IPaddrs)
+
+		regExString = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}-[0-9]{1,3}$"
+		Re = regexp.MustCompile(regExString)
+		iind2 := Re.FindStringIndex(IPaddrs)
+
+		if iind1 == nil && iind2 == nil {
+			return ipsplitted, errors.New("Invalid IP address")
+		}
+
 		if strings.Index(vars, "-") != -1 {
 			//Диапазон указывается например так: 192.168.0.10-220
 			vst := strings.Split(vars, "-")
