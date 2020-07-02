@@ -42,11 +42,11 @@ func MakeListIPAddresses(IPaddrs string) (IPaddrsList []string, err error) {
 	for _, vars := range ipsplitted2 {
 		regExString := "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"
 		Re := regexp.MustCompile(regExString)
-		iind1 := Re.FindStringIndex(IPaddrs)
+		iind1 := Re.FindStringIndex(vars)
 
 		regExString = "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}-[0-9]{1,3}$"
 		Re = regexp.MustCompile(regExString)
-		iind2 := Re.FindStringIndex(IPaddrs)
+		iind2 := Re.FindStringIndex(vars)
 
 		if iind1 == nil && iind2 == nil {
 			return ipsplitted, errors.New("Invalid IP address")
