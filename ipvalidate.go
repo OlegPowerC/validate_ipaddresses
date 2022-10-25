@@ -9,7 +9,6 @@ import (
 )
 
 //Version 1.0.3
-//version 1.0.1 also updated
 
 type IPAddressesWithLoginAndPassword struct {
 	IPAddress string
