@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+//Version 1.0.3
+
 type IPAddressesWithLoginAndPassword struct {
 	IPAddress string
 	Login     string
