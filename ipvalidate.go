@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-//Version v1.0.3
+//Version only one
 
 type IPAddressesWithLoginAndPassword struct {
 	IPAddress string
