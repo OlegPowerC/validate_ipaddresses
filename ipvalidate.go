@@ -14,6 +14,7 @@ type IPAddressesWithLoginAndPassword struct {
 	IPAddress string
 	Login     string
 	Password  string
+	Port      int
 }
 
 func CheckSingleIp(IPaddr string) (err error) {
@@ -102,6 +103,7 @@ func MakeListIPAddressesWithLoginPassword(IPaddrs string) (IPaddrsList []IPAddre
 		LoginPart := ""
 		PasswordPart := ""
 		AddressPart := varPip
+		Port := 0
 		if strings.Contains(varPip, "@") {
 			NestedSplittedSt := strings.Split(varPip, "@")
 			if len(NestedSplittedSt) == 2 {
@@ -117,6 +119,15 @@ func MakeListIPAddressesWithLoginPassword(IPaddrs string) (IPaddrsList []IPAddre
 				} else {
 					return ipsplitted, errors.New("Invalid IP user password ipaddress string")
 				}
+			}
+		}
+		PortSplit := strings.Split(AddressPart, ":")
+		if len(PortSplit) == 2 {
+			AddressPart = PortSplit[0]
+			//Пробуем преобразовать порт в uint
+			uiport, er := strconv.Atoi(PortSplit[1])
+			if er == nil && uiport > 0 {
+				Port = uiport
 			}
 		}
 		regExString := "^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$"
@@ -155,10 +166,10 @@ func MakeListIPAddressesWithLoginPassword(IPaddrs string) (IPaddrsList []IPAddre
 			LastLoctet, _ := strconv.Atoi(vst[1])
 			for vsit := FirstLoctet; vsit <= LastLoctet; vsit++ {
 				ip := IPPrefix + strconv.Itoa(vsit)
-				ipsplitted = append(ipsplitted, IPAddressesWithLoginAndPassword{IPAddress: ip, Login: LoginPart, Password: PasswordPart})
+				ipsplitted = append(ipsplitted, IPAddressesWithLoginAndPassword{IPAddress: ip, Login: LoginPart, Password: PasswordPart, Port: Port})
 			}
 		} else {
-			ipsplitted = append(ipsplitted, IPAddressesWithLoginAndPassword{IPAddress: AddressPart, Login: LoginPart, Password: PasswordPart})
+			ipsplitted = append(ipsplitted, IPAddressesWithLoginAndPassword{IPAddress: AddressPart, Login: LoginPart, Password: PasswordPart, Port: Port})
 		}
 	}
 	return ipsplitted, nil

@@ -105,7 +105,7 @@ func TestMakeListIPAddresses(t *testing.T) {
 }
 
 func TestMakeListIPAddressesWithLoginPassword(t *testing.T) {
-	IpAddrs := []string{"root:test123%a_123@192.168.0.7-10", "root:test:rrr@10.10.2.100-120", "root@172.16.0.20", "128.0.7.1-257", "128.0.71-1f", "0.240.1.7-3", "10.240.1.7_3", "10.240,1.7-3", "10.240,1. 7-3", "10.240,1.7 -3", "10.240,1.7 - 3", "10.88.1.7-10,10.88.12.8"}
+	IpAddrs := []string{"root:test123%a_123@192.168.0.7-10", "root:test:rrr@10.10.2.100-120", "root@172.16.0.20", "128.0.7.1-257", "128.0.71-1f", "0.240.1.7-3", "10.240.1.7_3", "10.240,1.7-3", "10.240,1. 7-3", "10.240,1.7 -3", "10.240,1.7 - 3", "10.88.1.7-10,10.88.12.8", "root:test123%a_123@192.168.0.7:22"}
 
 	IPList, RetResult := MakeListIPAddressesWithLoginPassword(IpAddrs[0])
 	if RetResult != nil {
@@ -171,6 +171,29 @@ func TestMakeListIPAddressesWithLoginPassword(t *testing.T) {
 	} else {
 		if len(IPList) != 5 {
 			t.Error("Ожидается количество IP адресов 5 а получено:", len(IPList))
+		}
+	}
+
+	IPList, RetResult = MakeListIPAddressesWithLoginPassword(IpAddrs[12])
+	if RetResult != nil {
+		t.Error("Ожидается успешое завершение, а получена ошибка:", RetResult)
+	} else {
+		if len(IPList) != 1 {
+			t.Error("Ожидается количество IP адресов 1 а получено:", len(IPList))
+		}
+		for _, rdata := range IPList {
+			if rdata.Login != "root" {
+				t.Error("Ожидается имя пользователя root а получено", rdata.Login)
+			}
+			if rdata.Password != "test123%a_123" {
+				t.Error("Ожидается пароль test123%a_123 а получен", rdata.Password)
+			}
+			if rdata.IPAddress != "192.168.0.7" {
+				t.Error("Ожидается адрес  192.168.0.7 а получен", rdata.IPAddress)
+			}
+			if rdata.Port != 22 {
+				t.Error("Ожидается адрес 22 а получен", rdata.Port)
+			}
 		}
 	}
 }
